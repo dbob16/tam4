@@ -8,6 +8,7 @@ type SettingsStruct struct {
 		DBPassword string `json:"password"`
 		DBDatabase string `json:"database"`
 	} `json:"db_creds"`
+	APIPW string `json:"api_pw"`
 }
 
 type SettingsDirs struct {

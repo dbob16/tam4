@@ -6,10 +6,13 @@ import (
 	"net/http"
 	"os"
 
-	"git.dilangilluly.us/dbob16/tam4/apiserver/settings"
+	"git.dilangilluly.us/dbob16/tam4/apiserver/localdb"
+	"git.dilangilluly.us/dbob16/tam4/apiserver/apikeys"
+
 )
 
 func main() {
+	log.Println(localdb.InitDB())
 	app := http.NewServeMux()
 
 	app.HandleFunc("GET /api", func(w http.ResponseWriter, r *http.Request) {
@@ -20,13 +23,7 @@ func main() {
 		json.NewEncoder(w).Encode(response)
 	})
 
-	app.HandleFunc("GET /api/settings", func(w http.ResponseWriter, r *http.Request) {
-		config := settings.ReadSettings()
-
-		w.Header().Add("Content-Type", "application/json")
-		w.WriteHeader(200)
-		json.NewEncoder(w).Encode(config)
-	})
+	app.Handle("/api/api_keys", apikeys.ApiKeyRouter())
 
 	if len(os.Args) > 1 {
 		if os.Args[1] == "dev" {

@@ -52,6 +52,11 @@ func ReadSettings() SettingsStruct {
 			} else {
 				s.DBCreds.DBDatabase = "tam4"
 			}
+			if val, exists := os.LookupEnv("TAM4_API_PW"); exists {
+				s.APIPW = val
+			} else {
+				s.APIPW = "dbob16"
+			}
 
 			fileToWrite, err := json.MarshalIndent(s, "", "  ")
 			if err != nil {
