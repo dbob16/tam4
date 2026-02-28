@@ -55,10 +55,29 @@
       })
 
       if (!res.ok) {
-        console.warn(`Error from server: [${res.status}] ${res.statusText}`)
+        console.warn(`Error from server: [${res.status}] ${res.statusText}`);
+        return
+      }
+
+      const jsonData = await res.json();
+
+      currentSettings.remote_key = jsonData.api_key;
+
+      await loginApi()
+      return
+    }
+
+    const deleteKey = async (key_to_del) => {
+      const searchStr = new URLSearchParams({addr: serverString, api_pw: currentPassword, key_to_del: key_to_del}).toString();
+      const res = await fetch(`/api/api_keys?${searchStr}`, {method: 'DELETE'});
+
+      if (!res.ok) {
+        console.warn(`Error from server: [${res.status}] ${res.statusText}`);
+        return
       }
 
       await loginApi()
+      return
     }
 </script>
 
@@ -67,6 +86,8 @@
 </svelte:head>
 
 <h1>TAM4 - Settings</h1>
+
+{serverString}
 
 <div class="settingsfields flex-column">
     <div class="flex-row">
@@ -113,8 +134,12 @@
                                 <button class="styled" onclick={() => {
                                   currentSettings.remote_key = key.api_key;
                                 }}>Use</button>
+                                {:else}
+                                <span>(Current)</span>
                                 {/if}
-                                <button class="styled">Delete</button>
+                                <button class="styled" onclick={async () => {
+                                 await deleteKey(key.api_key);
+                                }}>Delete</button>
                             </td>
                         </tr>
                     {/each}

@@ -2,5 +2,47 @@
     --fg-color: #000;
     --bg-color: #fff;
     --fg-hover: #222;
-    --bg-hover: #ddd;
+    --bg-hover: #aaa;
+}
+
+.light .blue {
+    --fg-color: #004;
+    --bg-color: #99f;
+    --fg-hover: #99f;
+    --bg-hover: #004;
+}
+
+.dark .blue {
+    --fg-color: #99f;
+    --bg-color: #004;
+    --fg-hover: #004;
+    --bg-hover: #99f;
+}
+
+.light .yellow {
+    --fg-color: #787800;
+    --bg-color: #ffc;
+    --fg-hover: #ffc;
+    --bg-hover: #787800;
+}
+
+.dark .yellow {
+    --fg-color: #ffc;
+    --bg-color: #787800;
+    --fg-hover: #787800;
+    --bg-hover: #ffc;
+}
+
+.light .red {
+    --fg-color: #400;
+    --bg-color: #f88;
+    --fg-hover: #f88;
+    --bg-hover: #400;
+}
+
+.dark .red {
+    --fg-color: #f88;
+    --bg-color: #400;
+    --fg-hover: #400;
+    --bg-hover: #f88;
 }

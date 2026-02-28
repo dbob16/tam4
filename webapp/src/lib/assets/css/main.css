@@ -36,9 +36,22 @@ a.styled, button.styled {
     padding: 0.5rem;
     border: solid 0.1rem var(--fg-color);
     border-radius: 0.25rem;
+    transition: ease 1s all;
 }
 
 a.styled:hover, button.styled:hover {
     color: var(--fg-hover);
     background-color: var(--bg-hover);
+}
+
+table {
+    text-align: left;
+}
+
+.light table tbody tr:nth-child(even) {
+    background-color: #ddd;
+}
+
+.dark table tbody tr:nth-child(even) {
+    background-color: #111;
 }

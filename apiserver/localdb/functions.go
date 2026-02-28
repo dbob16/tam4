@@ -29,5 +29,7 @@ func InitDB() (string) {
 	}
 
 	db.Exec("CREATE TABLE IF NOT EXISTS api_keys (api_key VARCHAR(255) PRIMARY KEY, description VARCHAR(255))")
+	db.Exec("CREATE TABLE IF NOT EXISTS prefixes (prefix VARCHAR(255) PRIMARY KEY, color VARCHAR(100), weight INT)")
+
 	return "DB Initialized Successfully"
 }
