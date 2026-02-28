@@ -1,0 +1,6 @@
+.white {
+    --fg-color: #000;
+    --bg-color: #fff;
+    --fg-hover: #222;
+    --bg-hover: #ddd;
+}

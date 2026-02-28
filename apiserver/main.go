@@ -16,7 +16,10 @@ func main() {
 	app := http.NewServeMux()
 
 	app.HandleFunc("GET /api", func(w http.ResponseWriter, r *http.Request) {
-		response := mainpath_response{Status: "healthy", WhoAmI: "tam4_server", Authenticated: false}
+		api_key := r.URL.Query().Get("api_key")
+		key_auth := apikeys.CheckAPIKey(api_key)
+
+		response := mainpath_response{Status: "healthy", WhoAmI: "tam4_server", Authenticated: key_auth}
 
 		w.Header().Add("Content-Type", "application/json")
 		w.WriteHeader(200)

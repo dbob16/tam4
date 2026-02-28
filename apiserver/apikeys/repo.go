@@ -80,3 +80,16 @@ func DeleteAPIKey(api_pw string, key_to_del string) (string, error) {
 
 	return "Key deleted successfully.", nil
 }
+
+func CheckAPIKey(api_key string) (bool) {
+	db := localdb.NewSession()
+	defer db.Close()
+
+	var out_key string
+	err := db.QueryRow("SELECT api_key FROM api_keys WHERE api_key = $1", api_key).Scan(&out_key)
+	if err != nil {
+		return false
+	}
+
+	return true
+}

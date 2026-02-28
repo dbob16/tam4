@@ -1,2 +1,33 @@
 apiserver/build/
 apiserver/settings.json
+
+# The following are from Sveltekit for the webapp dir
+
+webapp/node_modules
+
+# Output
+webapp/.output
+webapp/.vercel
+webapp/.netlify
+webapp/.wrangler
+webapp/.svelte-kit
+webapp/build
+
+# OS
+webapp/.DS_Store
+webapp/Thumbs.db
+
+# Env
+webapp/.env
+webapp/.env.*
+!webapp/.env.example
+!webapp/.env.test
+
+# Vite
+webapp/vite.config.js.timestamp-*
+webapp/vite.config.ts.timestamp-*
+# SQLite
+webapp/*.db
+
+# custom
+webapp/settings.json

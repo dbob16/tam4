@@ -1,0 +1,44 @@
+:root {
+    --fg-color: #111;
+    --bg-color: #ddd;
+    --fg-hover: #111;
+    --bg-hover: #aaa;
+}
+
+.flex-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: row;
+    padding: 0.1rem 0;
+}
+
+.flex-column {
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+    padding: 0.1rem 0;
+}
+
+body.dark {
+    color: #fff;
+    background-color: #000;
+
+    --fg-color: #ddd;
+    --bg-color: #111;
+    --fg-hover: #aaa;
+    --bg-hover: #111;
+}
+
+a.styled, button.styled {
+    color: var(--fg-color);
+    background-color: var(--bg-color);
+    text-decoration: none;
+    padding: 0.5rem;
+    border: solid 0.1rem var(--fg-color);
+    border-radius: 0.25rem;
+}
+
+a.styled:hover, button.styled:hover {
+    color: var(--fg-hover);
+    background-color: var(--bg-hover);
+}
