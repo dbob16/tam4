@@ -9,6 +9,7 @@ import (
 	"git.dilangilluly.us/dbob16/tam4/apiserver/localdb"
 	"git.dilangilluly.us/dbob16/tam4/apiserver/apikeys"
 	"git.dilangilluly.us/dbob16/tam4/apiserver/prefixes"
+	"git.dilangilluly.us/dbob16/tam4/apiserver/tickets"
 )
 
 func main() {
@@ -28,6 +29,7 @@ func main() {
 
 	app.Handle("/api/api_keys/", http.StripPrefix("/api/api_keys", apikeys.ApiKeyRouter()))
 	app.Handle("/api/prefixes/", http.StripPrefix("/api/prefixes", prefixes.PrefixRouter()))
+	app.Handle("/api/tickets/", http.StripPrefix("/api/tickets", tickets.TicketRouter()))
 
 	if len(os.Args) > 1 {
 		if os.Args[1] == "dev" {

@@ -34,6 +34,16 @@
       }
     }
 
+    const deletePrefix = async (prefix) => {
+      const res = await fetch(`/api/prefixes?prefix=${prefix}`, {method: 'DELETE'});
+      if (!res.ok) {
+        window.alert(`Issue deleting prefix: [${res.status}] ${res.statusText}`)
+        return
+      } else {
+        getPrefixes();
+      }
+    }
+
     if (browser) {
       getPrefixes()
     }
@@ -102,7 +112,9 @@
                           prefixForm = {...prefix}
                         }}>Edit</button>
                         {/if}
-                        <button class="styled">Delete</button>
+                        <button class="styled" onclick={() => {
+                          deletePrefix(prefix.prefix)
+                        }}>Delete</button>
                     </td>
                 </tr>
                 {/each}

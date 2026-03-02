@@ -10,6 +10,7 @@
     gap: 0.5rem;
     flex-direction: row;
     padding: 0.1rem 0;
+    align-items: center;
 }
 
 .flex-column {
@@ -46,6 +47,14 @@ a.styled:hover, button.styled:hover {
 
 table {
     text-align: left;
+}
+
+.light {
+    border-color: #000;
+}
+
+.dark {
+    border-color: #fff;
 }
 
 .light table tbody tr:nth-child(even) {

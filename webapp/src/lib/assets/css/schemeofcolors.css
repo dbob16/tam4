@@ -1,8 +1,15 @@
-.white {
+.light .white {
     --fg-color: #000;
     --bg-color: #fff;
     --fg-hover: #222;
     --bg-hover: #aaa;
+}
+
+.dark .white {
+    --fg-color: #222;
+    --bg-color: #fff;
+    --fg-hover: #fff;
+    --bg-hover: #222;
 }
 
 .light .blue {
