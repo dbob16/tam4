@@ -13,7 +13,8 @@ export const readSettings = () => {
       display_theme: "light",
       remote_tls: false,
       remote_server: "",
-      remote_key: ""
+      remote_key: "",
+      ticket_default: "CALL"
     };
     const writeData = JSON.stringify(stockConfig, null, 2);
     writeFileSync(settingsPath, writeData);

@@ -154,6 +154,14 @@
         </div>
         {/if}
     </div>
+    <h2>Ticket Default Preference</h2>
+    <div class="flex-row">
+        <div>Default Contact Preference:</div>
+        <select name="ticket_preference" bind:value={currentSettings.ticket_default}>
+            <option value="CALL">CALL</option>
+            <option value="TEXT">TEXT</option>
+        </select>
+    </div>
 </div>
 
 <div class="actions flex-column">

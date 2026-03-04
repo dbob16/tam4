@@ -13,6 +13,13 @@
     align-items: center;
 }
 
+.flex-space {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: space-between;
+}
+
 .flex-column {
     display: flex;
     gap: 0.5rem;
@@ -46,7 +53,16 @@ a.styled:hover, button.styled:hover {
 }
 
 table {
+    width: 100%;
     text-align: left;
+}
+
+.light table thead {
+    background-color: #fff;
+}
+
+.dark table thead {
+    background-color: #000;
 }
 
 .light {

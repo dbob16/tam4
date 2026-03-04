@@ -99,7 +99,7 @@ func GetRangeTickets(api_key string, prefix string, id_from int, id_to int) ([]T
 		rtnTickets[i] = Ticket{Prefix: prefix, TicketID: i, FirstName: "", LastName: "", PhoneNumber: "", Preference: ""}
 	}
 
-	results, err := db.Query("SELECT prefix, ticket_id, first_name, last_name, phone_number, preference FROM tickets WHERE prefix = $1", prefix)
+	results, err := db.Query("SELECT prefix, ticket_id, first_name, last_name, phone_number, preference FROM tickets WHERE prefix = $1 AND ticket_id BETWEEN $2 AND $3 ORDER BY ticket_id ASC", prefix, id_from, id_to)
 	if err != nil {
 		return nil, err
 	}
@@ -111,6 +111,9 @@ func GetRangeTickets(api_key string, prefix string, id_from int, id_to int) ([]T
 	}
 
 	rtnValues := slices.Collect(maps.Values(rtnTickets))
+	slices.SortFunc(rtnValues, func(a, b Ticket) int {
+		return a.TicketID - b.TicketID
+	})
 
 	return rtnValues, nil
 }
