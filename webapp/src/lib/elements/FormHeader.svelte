@@ -21,6 +21,18 @@
       hotkeys("alt+o", function(event, handler) {
         event.preventDefault();
         functions.prevRow();
+      });
+      hotkeys("alt+c", function(event, handler) {
+        event.preventDefault();
+        functions.copy();
+      });
+      hotkeys("alt+v", function(event, handler) {
+        event.preventDefault();
+        functions.paste();
+      });
+      hotkeys("alt+s", function(event, handler) {
+        event.preventDefault();
+        functions.savePage();
       })
     }
 </script>
@@ -40,15 +52,15 @@
             <button class="styled" onclick={() => functions.prevRow()}>Prev Row</button>
         </div>
         <div>
-            <button class="styled">Copy</button>
+            <button class="styled" onclick={() => functions.copy()}>Copy</button>
         </div>
         <div>
-            <button class="styled">Paste</button>
+            <button class="styled" onclick={() => functions.paste()}>Paste</button>
         </div>
     </div>
     <div class="flex-row">
         <div>
-            <button class="styled" onclick={() => functions.savePage()}>Save All</button>
+            <button class="styled" onclick={() => functions.savePage()}>Save Marked</button>
         </div>
     </div>
 </div>

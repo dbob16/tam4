@@ -1,4 +1,5 @@
 <script>
+    import { browser } from "$app/environment";
     import FormHeader from "$lib/elements/FormHeader.svelte";
     import Pager from "$lib/elements/Pager.svelte"
 
@@ -60,13 +61,12 @@
           const res = await fetch('/api/tickets', {method: 'POST', body: JSON.stringify(ticketsToSave), headers: {'Content-Type': 'application/json'}});
           if (res.ok) {
             currentTickets.forEach(t => t.changed = false);
-            console.log("Tickets saved!")
+            alert("Tickets saved!")
           } else {
-            console.log("Error saving tickets.")
+            alert("Error saving tickets.")
           }
-        } else {
-          console.log("Nothing to save.")
         }
+        selectIdx(0);
       },
       prevPage: () => {
         [pagerForm.id_from, pagerForm.id_to] = [pagerForm.id_from - diff, pagerForm.id_to - diff];
@@ -99,8 +99,30 @@
       dupUp: () => {
         dupItem(curIdx, prevIdx);
         functions.prevRow();
+      },
+      copy: () => {
+        window.localStorage.setItem("tam4-ticket", JSON.stringify(currentTickets[curIdx]));
+        selectIdx(curIdx);
+      }, paste: () => {
+        const pTicket = window.localStorage.getItem("tam4-ticket");
+        if (pTicket) {
+          const cTicket = currentTickets[curIdx];
+          const jTicket = JSON.parse(pTicket);
+          currentTickets[curIdx] = {...jTicket, prefix: cTicket.prefix, ticket_id: cTicket.ticket_id, changed: true};
+        }
+        selectIdx(curIdx);
       }
     };
+
+    if (browser) {
+      window.addEventListener('beforeunload', (e) => {
+        if (ticketsToSave.length > 0) {
+          e.preventDefault();
+          e.returnValue = '';
+          return '';
+        }
+      })
+    }
 </script>
 
 <svelte:head>
@@ -149,7 +171,7 @@
                 </select>
             </td>
             <td>
-                <button>{ticket.changed ? "Y" : "N"}</button>
+                <button title="Click to toggle" tabindex="-1" onclick={() => ticket.changed = !ticket.changed}>{ticket.changed ? "Save" : "Discard"}</button>
             </td>
         </tr>
         {/each}
@@ -164,6 +186,12 @@
 
     table thead th {
         border: solid 1px;
+    }
+
+    table tbody tr:focus-within td {
+        font-weight: bold;
+        border-style: solid none;
+        border-width: 1px;
     }
 
     table tbody input {

@@ -9,7 +9,15 @@
     let descField = $state("");
     let currentKeys = $state([]);
 
-    let serverString = $derived((currentSettings.remote_tls ? "https://" : "http://") + currentSettings.remote_server + (currentSettings.remote_tls ? ":8443" : ":8000"));
+    let serverString = $derived((currentSettings.remote_tls ? "https://" : "http://") + currentSettings.remote_server + ":" + currentSettings.remote_port);
+
+    const changePort = () => {
+      if (currentSettings.remote_tls) {
+        currentSettings.remote_port = "8443"
+      } else if (!currentSettings.remote_tls) {
+        currentSettings.remote_port = "8000"
+      }
+    }
 
     const saveSettings = async () => {
       const res = await fetch('/api/settings', {
@@ -102,12 +110,19 @@
         <div class="flex-row">
             <div>TLS Encryption:</div>
             <button onclick={() => {
-              currentSettings.remote_tls = !currentSettings.remote_tls
+              currentSettings.remote_tls = !currentSettings.remote_tls;
+              changePort();
             }}>{currentSettings.remote_tls ? "Yes" : "No"}</button>
         </div>
         <div class="flex-row">
             <div>Remote Server:</div>
             <input type="text" name="remote_server" bind:value={currentSettings.remote_server}>
+            <div>Port:</div>
+            <input type="text" list="port_list" name="remote_port" bind:value={currentSettings.remote_port}>
+            <datalist id="port_list">
+                <option value="8000">8000 - Default HTTP TAM4 Port</option>
+                <option value="8443">8443 - Default TLS TAM4 Port</option>
+            </datalist>
         </div>
         {#if loginState}
         <div class="flex-row">

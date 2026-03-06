@@ -16,3 +16,13 @@ export const tickets = sqliteTable('tickets', {
 }, (t) => [
   primaryKey({columns: [t.prefix, t.ticket_id]})
 ])
+
+export const baskets = sqliteTable('baskets', {
+  prefix: text('prefix').notNull(),
+  basket_id: integer('basket_id'),
+  description: text('description'),
+  donors: text('donors'),
+  winning_ticket: integer('winning_ticket').notNull().default(0)
+}, (b) => [
+  primaryKey({columns: [b.prefix, b.basket_id]})
+])

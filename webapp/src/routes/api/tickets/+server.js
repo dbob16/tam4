@@ -11,11 +11,11 @@ export const POST = async ({ request }) => {
   const reqData = await request.json();
 
   if (reqData.length > 700) {
-    const chunkTickets = chunkArr(reqData);
+    const chunkTickets = chunkArr(reqData, 700);
     for (let i = 0; i < chunkTickets.length; i++) {
       await db
         .insert(tickets)
-        .values(chunkTickets)
+        .values(chunkTickets[i])
         .onConflictDoUpdate({
           target: [tickets.prefix, tickets.ticket_id],
           set: {

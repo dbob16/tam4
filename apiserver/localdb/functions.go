@@ -39,6 +39,14 @@ func InitDB() (string) {
 		preference VARCHAR(20),
 		PRIMARY KEY (prefix, ticket_id)
 		)`)
+	db.Exec(`CREATE TABLE IF NOT EXISTS baskets (
+		prefix VARCHAR(255),
+		basket_id INT,
+		description VARCHAR(255),
+		donors VARCHAR(255),
+		winning_ticket INT NOT NULL DEFAULT 0,
+		PRIMARY KEY (prefix, basket_id)
+		)`)
 
 	return "DB Initialized Successfully"
 }

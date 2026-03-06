@@ -5,6 +5,7 @@ import (
 	"errors"
 	"maps"
 	"slices"
+	"cmp"
 
 	"git.dilangilluly.us/dbob16/tam4/apiserver/apikeys"
 	"git.dilangilluly.us/dbob16/tam4/apiserver/localdb"
@@ -112,7 +113,7 @@ func GetRangeTickets(api_key string, prefix string, id_from int, id_to int) ([]T
 
 	rtnValues := slices.Collect(maps.Values(rtnTickets))
 	slices.SortFunc(rtnValues, func(a, b Ticket) int {
-		return a.TicketID - b.TicketID
+		return cmp.Compare(a.TicketID, b.TicketID)
 	})
 
 	return rtnValues, nil

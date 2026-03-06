@@ -13,6 +13,7 @@ export const readSettings = () => {
       display_theme: "light",
       remote_tls: false,
       remote_server: "",
+      remote_port: "8000",
       remote_key: "",
       ticket_default: "CALL"
     };
@@ -31,7 +32,7 @@ export const writeSettings = (fileData) => {
 export const getRemote = () => {
   const config = readSettings();
   const prefix = config.remote_tls ? "https://" : "http://";
-  const port = config.remote_tls ? ":8443" : ":8000";
+  const port = `:${config.remote_port}`;
   const connStr = prefix + config.remote_server + port;
   return {conn_str: connStr, api_key: config.remote_key}
 }
