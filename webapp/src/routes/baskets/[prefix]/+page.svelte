@@ -9,14 +9,14 @@
 
     let pagerForm = $state({id_from: 0, id_to: 0});
 
-    let currentTickets = $state([]);
-    let ticketsToSave = $derived(currentTickets.filter(t => t.changed))
+    let currentBaskets = $state([]);
+    let basketsToSave = $derived(currentBaskets.filter(t => t.changed))
     let diff = $derived(pagerForm.id_to - pagerForm.id_from + 1);
     let curIdx = $state(0), nextIdx = $derived(curIdx + 1), prevIdx = $derived(curIdx - 1);
 
     const selectIdx = (idxSel) => {
       setTimeout(() => {
-        const elemSel = document.getElementById(`${idxSel}_first_name`);
+        const elemSel = document.getElementById(`${idxSel}_description`);
         if (elemSel) {
           elemSel.select()
         }
@@ -24,10 +24,10 @@
     }
 
     const dupItem = (dupId, repId) => {
-      const dupObj = currentTickets[dupId];
-      const repObj = currentTickets[repId];
+      const dupObj = currentBaskets[dupId];
+      const repObj = currentBaskets[repId];
       if (dupObj && repObj) {
-        currentTickets[repId] = {...dupObj, ticket_id: repObj.ticket_id, changed: true}
+        currentBaskets[repId] = {...dupObj, basket_id: repObj.basket_id, changed: true}
       }
     }
 
@@ -39,17 +39,14 @@
         if (pagerForm.id_to - pagerForm.id_from > 299) {
           pagerForm.id_to = pagerForm.id_from + 299;
         }
-        const res = await fetch(`/api/tickets/${prefix}/${pagerForm.id_from}/${pagerForm.id_to}`);
+        const res = await fetch(`/api/baskets/${prefix}/${pagerForm.id_from}/${pagerForm.id_to}`);
         if (!res.ok) {
           return
         }
-        const newTickets = await res.json();
-        if (newTickets) {
-          currentTickets = newTickets.map(t => {
-            if (!t.preference) {
-              t.preference = settings.ticket_default
-            }
-            return {...t, changed: false}
+        const newBaskets = await res.json();
+        if (newBaskets) {
+          currentBaskets = newBaskets.map(b => {
+            return {...b, changed: false}
           });
         } else {
           currentTickets = [];
@@ -57,11 +54,11 @@
         selectIdx(0);
       },
       savePage: async () => {
-        if (ticketsToSave.length > 0) {
-          const res = await fetch('/api/tickets', {method: 'POST', body: JSON.stringify(ticketsToSave), headers: {'Content-Type': 'application/json'}});
+        if (basketsToSave.length > 0) {
+          const res = await fetch('/api/baskets', {method: 'POST', body: JSON.stringify(basketsToSave), headers: {'Content-Type': 'application/json'}});
           if (res.ok) {
-            currentTickets.forEach(t => t.changed = false);
-            alert("Tickets saved!")
+            currentBaskets.forEach(b => b.changed = false);
+            alert("Baskets saved!")
           } else {
             alert("Error saving tickets.")
           }
@@ -77,7 +74,7 @@
         functions.getPage();
       },
       nextRow: () => {
-        if (currentTickets[nextIdx]) {
+        if (currentBaskets[nextIdx]) {
           curIdx = nextIdx;
         } else {
           curIdx = curIdx;
@@ -101,14 +98,14 @@
         functions.prevRow();
       },
       copy: () => {
-        window.localStorage.setItem("tam4-ticket", JSON.stringify(currentTickets[curIdx]));
+        window.localStorage.setItem("tam4-basket", JSON.stringify(currentBaskets[curIdx]));
         selectIdx(curIdx);
       }, paste: () => {
-        const pTicket = window.localStorage.getItem("tam4-ticket");
-        if (pTicket) {
-          const cTicket = currentTickets[curIdx];
-          const jTicket = JSON.parse(pTicket);
-          currentTickets[curIdx] = {...jTicket, prefix: cTicket.prefix, ticket_id: cTicket.ticket_id, changed: true};
+        const pBasket = window.localStorage.getItem("tam4-basket");
+        if (pBasket) {
+          const cBasket = currentBaskets[curIdx];
+          const jBasket = JSON.parse(pBasket);
+          currentBaskets[curIdx] = {...jBasket, prefix: cBasket.prefix, basket_id: cBasket.basket_id, changed: true};
         }
         selectIdx(curIdx);
       }
@@ -126,10 +123,10 @@
 </script>
 
 <svelte:head>
-    <title>TAM 4 - {prefix} Ticket Entry</title>
+    <title>TAM 4 - {prefix} Basket Entry</title>
 </svelte:head>
 
-<h1>TAM 4 - {prefix} Ticket Entry</h1>
+<h1>TAM 4 - {prefix} Basket Entry</h1>
 
 <table>
     <thead>
@@ -140,38 +137,31 @@
             </td>
         </tr>
         <tr>
-            <th>Ticket Number</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Phone Number</th>
-            <th>Preference</th>
+            <th>Basket Number</th>
+            <th>Description</th>
+            <th>Donors</th>
+            <th>Ticket</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        {#each currentTickets as ticket, idx}
+        {#each currentBaskets as basket, idx}
         <tr onfocusin={(e) => {
             curIdx = idx;
             e.target.scrollIntoView({behavior: "instant", block: "center"});
           }}>
-            <td>{ticket.ticket_id}</td>
+            <td>{basket.basket_id}</td>
             <td>
-                <input type="text" id="{idx}_first_name" onchange={() => ticket.changed = true} bind:value={ticket.first_name}>
+                <input type="text" id="{idx}_description" onchange={() => basket.changed = true} bind:value={basket.description}>
             </td>
             <td>
-                <input type="text" id="{idx}_last_name" onchange={() => ticket.changed = true} bind:value={ticket.last_name}>
+                <input type="text" id="{idx}_donors" onchange={() => basket.changed = true} bind:value={basket.donors}>
             </td>
             <td>
-                <input type="text" id="{idx}_phone_number" onchange={() => ticket.changed = true} bind:value={ticket.phone_number}>
+                {basket.winning_ticket}
             </td>
             <td>
-                <select id="{idx}_preference" onchange={() => ticket.changed = true} bind:value={ticket.preference}>
-                    <option value="CALL">CALL</option>
-                    <option value="TEXT">TEXT</option>
-                </select>
-            </td>
-            <td>
-                <button title="Click to toggle" tabindex="-1" onclick={() => ticket.changed = !ticket.changed}>{ticket.changed ? "Save" : "Discard"}</button>
+                <button title="Click to toggle" tabindex="-1" onclick={() => basket.changed = !basket.changed}>{basket.changed ? "Save" : "Discard"}</button>
             </td>
         </tr>
         {/each}

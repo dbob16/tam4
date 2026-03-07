@@ -47,6 +47,10 @@ func InitDB() (string) {
 		winning_ticket INT NOT NULL DEFAULT 0,
 		PRIMARY KEY (prefix, basket_id)
 		)`)
+	db.Exec(`CREATE OR REPLACE VIEW drawing AS
+		SELECT b.prefix, b.basket_id, b.description, b.winning_ticket, CONCAT(t.last_name, ', ', t.first_name) AS winner_name,
+		t.phone_number FROM baskets b LEFT JOIN tickets t ON b.prefix = t.prefix AND b.winning_ticket = t.ticket_id
+		ORDER BY b.prefix ASC, b.basket_id`)
 
 	return "DB Initialized Successfully"
 }

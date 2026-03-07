@@ -71,6 +71,7 @@
 <h2>Forms</h2>
 <div class="forms flex-row {prefixColor}">
     <a href="/tickets/{selectedPrefix}" target="_blank" class="styled">Ticket Entry Form</a>
+    <a href="/baskets/{selectedPrefix}" target="_blank" class="styled">Basket Entry Form</a>
 </div>
 
 <div class="mode">

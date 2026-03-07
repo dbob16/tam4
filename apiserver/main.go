@@ -11,7 +11,7 @@ import (
 	"git.dilangilluly.us/dbob16/tam4/apiserver/prefixes"
 	"git.dilangilluly.us/dbob16/tam4/apiserver/tickets"
 	"git.dilangilluly.us/dbob16/tam4/apiserver/baskets"
-
+	"git.dilangilluly.us/dbob16/tam4/apiserver/drawing"
 )
 
 func main() {
@@ -33,6 +33,7 @@ func main() {
 	app.Handle("/api/prefixes/", http.StripPrefix("/api/prefixes", prefixes.PrefixRouter()))
 	app.Handle("/api/tickets/", http.StripPrefix("/api/tickets", tickets.TicketRouter()))
 	app.Handle("/api/baskets/", http.StripPrefix("/api/baskets", baskets.BasketRouter()))
+	app.Handle("/api/drawing/", http.StripPrefix("/api/drawing", drawing.DrawingRouter()))
 
 	if len(os.Args) > 1 {
 		if os.Args[1] == "dev" {
