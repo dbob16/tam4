@@ -1,0 +1,10 @@
+{
+  "db": {
+    "host": "localhost",
+    "port": "5432",
+    "user": "tam4",
+    "password": "dbob16",
+    "database": "tam4"
+  },
+  "api_pw": "dbob16"
+}

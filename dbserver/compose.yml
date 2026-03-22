@@ -1,0 +1,22 @@
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: tam4
+      POSTGRES_PASSWORD: dbob16
+      POSTGRES_DB: tam4
+    ports:
+      - 127.0.0.1:5432:5432
+
+
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   restart: always
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: gillulyd@gmail.com
+  #     PGADMIN_DEFAULT_PASSWORD: dbob16
+  #   ports:
+  #     - 127.0.0.1:8080:80
