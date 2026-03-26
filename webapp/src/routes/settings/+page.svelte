@@ -94,6 +94,7 @@
     <p>The following settings are on their own pages:</p>
     <div class="m-2 flex flex-row gap-1 items-center">
         <a href={resolve("/settings/api_keys/")} target="_blank" class={bS.gray}>API Keys</a>
+        <a href={resolve("/settings/prefixes")} target="_blank" class={bS.gray}>Prefixes</a>
     </div>
 </div>
 

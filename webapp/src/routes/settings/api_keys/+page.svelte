@@ -92,6 +92,8 @@
             </td>
         </tr>
         {/each}
+    </tbody>
+    <tfoot>
         <tr>
             <td colspan="90">
                 <h1 class="text-lg font-bold">Create an API key:</h1>
@@ -108,13 +110,21 @@
                 </div>
             </td>
         </tr>
-    </tbody>
+    </tfoot>
 </table>
 {/if}
 
 <style>
     table {
         border-collapse: separate;
-        border-spacing: 1rem;
+        border-spacing: 0.25rem;
+    }
+
+    table td, table th {
+        padding: 0.25rem;
+    }
+
+    table tbody tr:nth-child(even) td {
+        background-color: var(--color-gray-200);
     }
 </style>
