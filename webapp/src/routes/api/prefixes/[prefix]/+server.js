@@ -7,7 +7,7 @@ export const GET = async ({ params }) => {
   const s = readConfig(), r = getRemote();
   const { prefix } = params;
   if (s.remote_server) {
-    const res = await fetch(`${r.conn_str}/api/prefixes/`);
+    const res = await fetch(`${r.conn_str}/api/prefixes/${prefix}?api_key=${r.api_key}`);
     if (!res.ok) {
       throw error(res.status, res.statusText)
     }
