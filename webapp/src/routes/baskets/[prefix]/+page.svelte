@@ -6,7 +6,7 @@
 
     const { data } = $props();
     const { prefix } = $derived({ ...data });
-    const pageTitle = $derived(`TAM 4 - ${prefix.prefix} Ticket Entry`);
+    const pageTitle = $derived(`TAM 4 - ${prefix.prefix} Basket Entry`);
 
     let pagerForm = $state({ page_start: 0, page_end: 0 });
 
@@ -33,7 +33,7 @@
             if (pagerForm.page_end - pagerForm.page_start > 300)
                 pagerForm.page_end = pagerForm.page_start + 299;
             const res = await fetch(
-                `/api/tickets/${prefix.prefix}/${pagerForm.page_start}/${pagerForm.page_end}`,
+                `/api/baskets/${prefix.prefix}/${pagerForm.page_start}/${pagerForm.page_end}`,
             );
             if (res.ok) {
                 const resData = await res.json();
@@ -58,7 +58,7 @@
         dupDown: () => {
             if (currentItems[nextIdx]) {
                 const dupItem = { ...currentItems[curIdx] };
-                ["prefix", "ticket_id"].forEach((prop) => delete dupItem[prop]);
+                ["prefix", "basket_id"].forEach((prop) => delete dupItem[prop]);
                 const exItem = { ...currentItems[nextIdx] };
                 currentItems[nextIdx] = {
                     ...exItem,
@@ -71,7 +71,7 @@
         dupUp: () => {
             if (prevIdx >= 0) {
                 const dupItem = { ...currentItems[curIdx] };
-                ["prefix", "ticket_id"].forEach((prop) => delete dupItem[prop]);
+                ["prefix", "basket_id"].forEach((prop) => delete dupItem[prop]);
                 const exItem = { ...currentItems[prevIdx] };
                 currentItems[prevIdx] = {
                     ...exItem,
@@ -97,7 +97,7 @@
         },
         copy: () => {
             const dupItem = { ...currentItems[curIdx] };
-            ["prefix", "ticket_id"].forEach((prop) => delete dupItem[prop]);
+            ["prefix", "basket_id"].forEach((prop) => delete dupItem[prop]);
             localStorage.setItem("tam-ticket", JSON.stringify(dupItem));
             setTimeout(() => selectIdx(curIdx), 1);
         },
@@ -109,7 +109,7 @@
         },
         save: async () => {
             if (itemsToSave.length > 0) {
-                const res = await fetch("/api/tickets", {
+                const res = await fetch("/api/baskets", {
                     method: "POST",
                     body: JSON.stringify(itemsToSave),
                     headers: { "Content-Type": "application/json" },
@@ -160,10 +160,8 @@
         </tr>
         <tr>
             <th class="p-1">Ticket ID</th>
-            <th class="p-1">First Name</th>
-            <th class="p-1">Last Name</th>
-            <th class="p-1">Phone Number</th>
-            <th class="p-1">Preference</th>
+            <th class="p-1">Description</th>
+            <th class="p-1">Donors</th>
             <th class="p-1">Actions</th>
         </tr>
         <tr>
@@ -185,13 +183,13 @@
                     });
                 }}
             >
-                <td class="p-1 border border-gray-700">{item.ticket_id}</td>
+                <td class="p-1 border border-gray-700">{item.basket_id}</td>
                 <td class="p-1 border border-gray-700"
                     ><input
                         class="p-1 w-full border border-gray-700"
                         type="text"
                         id="{idx}_default"
-                        bind:value={item.first_name}
+                        bind:value={item.description}
                         onchange={() => (item.changed = true)}
                     /></td
                 >
@@ -199,35 +197,9 @@
                     ><input
                         class="p-1 w-full border border-gray-700"
                         type="text"
-                        bind:value={item.last_name}
+                        bind:value={item.donors}
                         onchange={() => (item.changed = true)}
                     /></td
-                >
-                <td class="p-1 border border-gray-700"
-                    ><input
-                        class="p-1 w-full border border-gray-700"
-                        type="text"
-                        bind:value={item.phone_number}
-                        onchange={() => (item.changed = true)}
-                    /></td
-                >
-                <td class="p-1 border border-gray-700"
-                    ><button
-                        class={bS[prefix.color]}
-                        onclick={() => {
-                            item.preference === "TEXT"
-                                ? (item.preference = "CALL")
-                                : (item.preference = "TEXT");
-                            item.changed = true;
-                        }}
-                        onkeydown={(e) => {
-                          if (e.key == "c") {
-                            item.preference = "CALL";
-                          } else if (e.key == "t") {
-                            item.preference = "TEXT"
-                          };
-                        }}>{item.preference}</button
-                    ></td
                 >
                 <td class="p-1 border border-gray-700"
                     ><button

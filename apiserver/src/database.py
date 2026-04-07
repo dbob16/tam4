@@ -22,6 +22,13 @@ def init_db():
         phone_number VARCHAR(255),
         preference VARCHAR(20),
         PRIMARY KEY (prefix, ticket_id))""")
+    cur.execute("""CREATE TABLE IF NOT EXISTS baskets (
+        prefix VARCHAR(255),
+        basket_id INT,
+        description VARCHAR(255),
+        donors VARCHAR(255),
+        winning_ticket INT,
+        PRIMARY KEY (prefix, basket_id))""")
     conn.commit()
     conn.close()
     print("Database initiated successfully.")

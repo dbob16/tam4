@@ -93,7 +93,9 @@
     <h2 class="text-lg font-bold">Other Settings</h2>
     <p>The following settings are on their own pages:</p>
     <div class="m-2 flex flex-row gap-1 items-center">
+        {#if settings.remote_server}
         <a href={resolve("/settings/api_keys/")} target="_blank" class={bS.gray}>API Keys</a>
+        {/if}
         <a href={resolve("/settings/prefixes")} target="_blank" class={bS.gray}>Prefixes</a>
     </div>
 </div>

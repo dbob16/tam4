@@ -9,4 +9,4 @@ const client = new Database(dbPath);
 
 export const db = drizzle(client, { schema });
 
-export { prefixes, tickets } from "./schema";
+export { prefixes, tickets, baskets } from "./schema";

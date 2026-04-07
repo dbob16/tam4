@@ -18,25 +18,24 @@
 
 <h1 class="font-bold text-xl">{pagetitle}</h1>
 
-<div id="current_prefix" class="flex flex-col gap-1">
-    <h2>Current Prefix</h2>
-    <div class={bS[ifPrefix ? currentPrefix.color : "gray"]}>
-        {ifPrefix ? currentPrefix.prefix : "Please select prefix below."}
-    </div>
-</div>
-
-<div id="main_grid" class="my-2 flex flex-row flex-wrap gap-4">
+<div id="main_grid" class="my-2 flex flex-col w-full md:flex-row flex-wrap gap-4">
     <div
         id="prefix_selection"
         class="flex flex-col gap-1 items-center p-2 border border-gray-700 rounded"
     >
         <h2 class="font-bold text-lg">Prefix Selection</h2>
         {#each currentPrefixes as prefix (prefix.prefix)}
-            <button
-                class="{bS[prefix.color]} w-full"
-                onclick={() => (currentPrefix = { ...prefix })}
-                >{prefix.prefix}</button
+            <div
+                class="p-1 rounded w-full {currentPrefix.prefix == prefix.prefix
+                    ? 'border border-gray-700'
+                    : ''}"
             >
+                <button
+                    class="{bS[prefix.color]} w-full"
+                    onclick={() => (currentPrefix = { ...prefix })}
+                    >{prefix.prefix}</button
+                >
+            </div>
         {/each}
     </div>
     {#if ifPrefix}
@@ -45,7 +44,7 @@
             class="flex flex-col gap-1 items-center p-2 border border-gray-700 rounded"
         >
             <h2 class="font-bold text-lg">Forms</h2>
-            <div class="grid grid-cols-2 gap-1 text-center min-w-3xs">
+            <div class="grid grid-cols-2 gap-1 text-center w-full min-w-3xs">
                 <a
                     href={resolve("/tickets/[prefix]", {
                         prefix: currentPrefix.prefix,
@@ -53,11 +52,16 @@
                     target="_blank"
                     class={bS[currentPrefix.color]}>Tickets</a
                 >
-                <a href={resolve("/")} class={bS[currentPrefix.color]}
-                    >Baskets</a
+                <a
+                    href={resolve("/baskets/[prefix]", {
+                        prefix: currentPrefix.prefix,
+                    })}
+                    target="_blank"
+                    class={bS[currentPrefix.color]}>Baskets</a
                 >
                 <a
                     href={resolve("/")}
+                    target="_blank"
                     class="{bS[currentPrefix.color]} col-span-2">Drawing</a
                 >
             </div>
@@ -76,4 +80,8 @@
             >Settings</a
         >
     </div>
+</div>
+
+<div id="attr">
+    <p>Ticket Auction Manager 4 by Dilan Gilluly</p>
 </div>

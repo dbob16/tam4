@@ -5,3 +5,4 @@ def import_routers(app: FastAPI):
     app.include_router(routers.api_key_router)
     app.include_router(routers.prefix_router)
     app.include_router(routers.ticket_router)
+    app.include_router(routers.basket_router)

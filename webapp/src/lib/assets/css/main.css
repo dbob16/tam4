@@ -1,13 +1,3 @@
 body {
     padding: 1rem;
 }
-
-table thead {
-    position: sticky;
-    top: 0px;
-    background-color: #ffffff;
-}
-
-table thead th {
-    box-shadow: 0 2px 0 var(--color-gray-700);
-}
