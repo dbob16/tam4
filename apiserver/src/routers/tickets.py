@@ -10,6 +10,11 @@ def get_ticket_range(api_key: str = "", prefix: str = "", start_id: int = 0, end
     ApiKeyRepo().verify_api_key(api_key)
     return TicketRepo().get_ticket_range(prefix, start_id, end_id)
 
+@ticket_router.get("/{prefix}/{ticket_id}")
+def get_one_ticket(api_key: str = "", prefix: str = "", ticket_id: int = 0):
+    ApiKeyRepo().verify_api_key(api_key)
+    return TicketRepo().get_single_ticket(prefix, ticket_id)
+
 @ticket_router.post("")
 def post_ticket_range(api_key: str = "", ts: list[Ticket] = []):
     ApiKeyRepo().verify_api_key(api_key)

@@ -6,7 +6,7 @@
 
     const { data } = $props();
     const { prefix } = $derived({ ...data });
-    const pageTitle = $derived(`TAM 4 - ${prefix.prefix} Basket Entry`);
+    const pageTitle = $derived(`TAM 4 - ${prefix.prefix} Drawing Form`);
 
     let pagerForm = $state({ page_start: 0, page_end: 0 });
 
@@ -33,7 +33,7 @@
             if (pagerForm.page_end - pagerForm.page_start > 300)
                 pagerForm.page_end = pagerForm.page_start + 299;
             const res = await fetch(
-                `/api/baskets/${prefix.prefix}/${pagerForm.page_start}/${pagerForm.page_end}`,
+                `/api/drawing/${prefix.prefix}/${pagerForm.page_start}/${pagerForm.page_end}`,
             );
             if (res.ok) {
                 const resData = await res.json();
@@ -58,7 +58,7 @@
         dupDown: () => {
             if (currentItems[nextIdx]) {
                 const dupItem = { ...currentItems[curIdx] };
-                ["prefix", "basket_id"].forEach((prop) => delete dupItem[prop]);
+                ["prefix", "basket_id", "description"].forEach((prop) => delete dupItem[prop]);
                 const exItem = { ...currentItems[nextIdx] };
                 currentItems[nextIdx] = {
                     ...exItem,
@@ -71,7 +71,7 @@
         dupUp: () => {
             if (prevIdx >= 0) {
                 const dupItem = { ...currentItems[curIdx] };
-                ["prefix", "basket_id"].forEach((prop) => delete dupItem[prop]);
+                ["prefix", "basket_id", "description"].forEach((prop) => delete dupItem[prop]);
                 const exItem = { ...currentItems[prevIdx] };
                 currentItems[prevIdx] = {
                     ...exItem,
@@ -97,19 +97,19 @@
         },
         copy: () => {
             const dupItem = { ...currentItems[curIdx] };
-            ["prefix", "basket_id"].forEach((prop) => delete dupItem[prop]);
-            localStorage.setItem("tam-basket", JSON.stringify(dupItem));
+            ["prefix", "basket_id", "description"].forEach((prop) => delete dupItem[prop]);
+            localStorage.setItem("tam-drawing", JSON.stringify(dupItem));
             setTimeout(() => selectIdx(curIdx), 1);
         },
         paste: () => {
-            const dupItem = JSON.parse(localStorage.getItem("tam-basket"));
+            const dupItem = JSON.parse(localStorage.getItem("tam-drawing"));
             const exItem = { ...currentItems[curIdx] };
             currentItems[curIdx] = { ...exItem, ...dupItem, changed: true };
             setTimeout(() => selectIdx(curIdx), 1);
         },
         save: async () => {
             if (itemsToSave.length > 0) {
-                const res = await fetch("/api/baskets", {
+                const res = await fetch("/api/drawing", {
                     method: "POST",
                     body: JSON.stringify(itemsToSave),
                     headers: { "Content-Type": "application/json" },
@@ -161,7 +161,8 @@
         <tr>
             <th class="p-1">Ticket ID</th>
             <th class="p-1">Description</th>
-            <th class="p-1">Donors</th>
+            <th class="p-1">Winning Ticket</th>
+            <th class="p-1">Winner</th>
             <th class="p-1">Actions</th>
         </tr>
         <tr>
@@ -184,23 +185,30 @@
                 }}
             >
                 <td class="p-1 border border-gray-700">{item.basket_id}</td>
+                <td class="p-1 border border-gray-700">
+                    {item.description || ""}
+                </td>
                 <td class="p-1 border border-gray-700"
                     ><input
                         class="p-1 w-full border border-gray-700"
-                        type="text"
+                        type="number"
                         id="{idx}_default"
-                        bind:value={item.description}
-                        onchange={() => (item.changed = true)}
+                        bind:value={item.winning_ticket}
+                        onchange={async () => {
+                          item.changed = true;
+                          const res = await fetch(`/api/tickets/${prefix.prefix}/${item.winning_ticket}`);
+                          if (!res.ok) return
+                          const data = await res.json();
+                          if (data) {
+                            item.first_name = data.first_name || "(blank)";
+                            item.last_name = data.last_name || "(blank)";
+                          }
+                        }}
                     /></td
                 >
-                <td class="p-1 border border-gray-700"
-                    ><input
-                        class="p-1 w-full border border-gray-700"
-                        type="text"
-                        bind:value={item.donors}
-                        onchange={() => (item.changed = true)}
-                    /></td
-                >
+                <td class="p-1 border border-gray-700">
+                    {item.last_name || "(blank)"}, {item.first_name || "(blank)"}
+                </td>
                 <td class="p-1 border border-gray-700"
                     ><button
                         class={bS[prefix.color]}

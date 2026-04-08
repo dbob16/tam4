@@ -2,6 +2,13 @@ from .template import RepoTemplate
 from ..models import Ticket
 
 class TicketRepo(RepoTemplate):
+    def get_single_ticket(self, prefix: str = "", ticket_id: int = 0):
+        self.cur.execute("SELECT * FROM tickets WHERE prefix = %s AND ticket_id = %s", (prefix, ticket_id))
+        result = self.cur.fetchone()
+        if result:
+            return Ticket(*result)
+        else:
+            return Ticket(prefix, ticket_id)
     def get_ticket_range(self, prefix: str = "", start_id: int = 0, end_id: int = 0):
         self.cur.execute("SELECT * FROM tickets WHERE prefix = %s AND ticket_id BETWEEN %s and %s", (prefix, start_id, end_id))
         results = self.cur.fetchall()

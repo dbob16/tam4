@@ -60,7 +60,9 @@
                     class={bS[currentPrefix.color]}>Baskets</a
                 >
                 <a
-                    href={resolve("/")}
+                    href={resolve("/drawing/[prefix]", {
+                      prefix: currentPrefix.prefix,
+                    })}
                     target="_blank"
                     class="{bS[currentPrefix.color]} col-span-2">Drawing</a
                 >

@@ -29,6 +29,10 @@ def init_db():
         donors VARCHAR(255),
         winning_ticket INT,
         PRIMARY KEY (prefix, basket_id))""")
+    cur.execute("""CREATE OR REPLACE VIEW winners AS
+        SELECT b.prefix, b.basket_id, b.description, b.winning_ticket, t.first_name, t.last_name, t.phone_number, t.preference
+        FROM baskets b LEFT JOIN tickets t ON b.prefix = t.prefix AND b.winning_ticket = t.ticket_id
+        ORDER BY b.prefix, b.basket_id""")
     conn.commit()
     conn.close()
     print("Database initiated successfully.")
