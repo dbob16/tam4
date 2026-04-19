@@ -7,3 +7,4 @@ def import_routers(app: FastAPI):
     app.include_router(routers.ticket_router)
     app.include_router(routers.basket_router)
     app.include_router(routers.drawing_router)
+    app.include_router(routers.reports_router)

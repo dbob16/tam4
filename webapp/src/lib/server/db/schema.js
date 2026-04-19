@@ -36,3 +36,16 @@ export const winners = sqliteView('winners', {
 }).as(sql`SELECT b.prefix, b.basket_id, b.description, b.winning_ticket, t.first_name, t.last_name, t.phone_number, t.preference
   FROM baskets b LEFT JOIN tickets t ON b.prefix = t.prefix AND b.winning_ticket = t.ticket_id
   ORDER BY b.prefix, b.basket_id`)
+
+export const winnersByName = sqliteView('winners_by_name', {
+  prefix: text('prefix'),
+  last_name: text('last_name'),
+  first_name: text('first_name'),
+  phone_number: text('phone_number'),
+  preference: text('preference'),
+  basket_id: integer('basket_id'),
+  winning_ticket: integer('winning_ticket'),
+  description: text('description')
+}).as(sql`SELECT b.prefix, t.last_name, t.first_name, t.phone_number, t.preference, b.basket_id, b.winning_ticket, b.description
+  FROM baskets b LEFT JOIN tickets t ON b.prefix = t.prefix AND b.winning_ticket = t.ticket_id
+  ORDER BY b.prefix, t.last_name, t.first_name, t.phone_number, b.basket_id`)

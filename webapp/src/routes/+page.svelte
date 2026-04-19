@@ -18,7 +18,10 @@
 
 <h1 class="font-bold text-xl">{pagetitle}</h1>
 
-<div id="main_grid" class="my-2 flex flex-col w-full md:flex-row flex-wrap gap-4">
+<div
+    id="main_grid"
+    class="my-2 flex flex-col w-full md:flex-row md:flex-wrap gap-4"
+>
     <div
         id="prefix_selection"
         class="flex flex-col gap-1 items-center p-2 border border-gray-700 rounded"
@@ -61,10 +64,32 @@
                 >
                 <a
                     href={resolve("/drawing/[prefix]", {
-                      prefix: currentPrefix.prefix,
+                        prefix: currentPrefix.prefix,
                     })}
                     target="_blank"
                     class="{bS[currentPrefix.color]} col-span-2">Drawing</a
+                >
+            </div>
+        </div>
+        <div
+            id="reports_menu"
+            class="flex flex-col gap-1 items-center p-2 border border-gray-700 rounded"
+        >
+            <h2 class="font-bold text-lg">Reports</h2>
+            <div class="grid grid-cols-2 gap-1 text-center w-full min-w-3xs">
+                <a
+                    href={resolve("/reports/byname/[prefix]", {
+                        prefix: currentPrefix.prefix,
+                    })}
+                    target="_blank"
+                    class={bS[currentPrefix.color]}>Winners By Name</a
+                >
+                <a
+                    href={resolve("/reports/bybasket/[prefix]", {
+                        prefix: currentPrefix.prefix,
+                    })}
+                    target="_blank"
+                    class={bS[currentPrefix.color]}>Winners By Basket #</a
                 >
             </div>
         </div>

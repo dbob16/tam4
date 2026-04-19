@@ -24,6 +24,7 @@
 
     const functions = {
         getPage: async () => {
+            functions.save();
             if (pagerForm.page_start > pagerForm.page_end) {
                 [pagerForm.page_start, pagerForm.page_end] = [
                     pagerForm.page_end,
@@ -116,14 +117,11 @@
                 });
                 if (res.ok) {
                     currentItems.forEach((i) => (i.changed = false));
-                    alert("Items saved successfully.");
                 } else {
                     alert(
                         `Error saving items: [${res.status}] ${res.statusText}`,
                     );
                 }
-            } else {
-                alert("Nothing to save.");
             }
         },
     };

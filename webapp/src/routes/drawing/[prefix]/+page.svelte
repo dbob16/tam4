@@ -24,6 +24,7 @@
 
     const functions = {
         getPage: async () => {
+            functions.save();
             if (pagerForm.page_start > pagerForm.page_end) {
                 [pagerForm.page_start, pagerForm.page_end] = [
                     pagerForm.page_end,
@@ -57,27 +58,27 @@
         },
         dupDown: () => {
             if (currentItems[nextIdx]) {
-                const dupItem = { ...currentItems[curIdx] };
-                ["prefix", "basket_id", "description"].forEach((prop) => delete dupItem[prop]);
+                const dupItem = { winning_ticket: currentItems[curIdx].winning_ticket };
                 const exItem = { ...currentItems[nextIdx] };
                 currentItems[nextIdx] = {
                     ...exItem,
                     ...dupItem,
                     changed: true,
                 };
+                functions.lookup(nextIdx);
             }
             setTimeout(() => functions.lineDown(), 1);
         },
         dupUp: () => {
             if (prevIdx >= 0) {
-                const dupItem = { ...currentItems[curIdx] };
-                ["prefix", "basket_id", "description"].forEach((prop) => delete dupItem[prop]);
+                const dupItem = { winning_ticket: currentItems[curIdx].winning_ticket };
                 const exItem = { ...currentItems[prevIdx] };
                 currentItems[prevIdx] = {
                     ...exItem,
                     ...dupItem,
                     changed: true,
                 };
+                functions.lookup(prevIdx);
             }
             setTimeout(() => functions.lineUp(), 1);
         },
@@ -96,8 +97,7 @@
             }
         },
         copy: () => {
-            const dupItem = { ...currentItems[curIdx] };
-            ["prefix", "basket_id", "description"].forEach((prop) => delete dupItem[prop]);
+            const dupItem = { winning_ticket: currentItems[curIdx].winning_ticket };
             localStorage.setItem("tam-drawing", JSON.stringify(dupItem));
             setTimeout(() => selectIdx(curIdx), 1);
         },
@@ -105,6 +105,7 @@
             const dupItem = JSON.parse(localStorage.getItem("tam-drawing"));
             const exItem = { ...currentItems[curIdx] };
             currentItems[curIdx] = { ...exItem, ...dupItem, changed: true };
+            functions.lookup(curIdx);
             setTimeout(() => selectIdx(curIdx), 1);
         },
         save: async () => {
@@ -116,16 +117,22 @@
                 });
                 if (res.ok) {
                     currentItems.forEach((i) => (i.changed = false));
-                    alert("Items saved successfully.");
                 } else {
                     alert(
                         `Error saving items: [${res.status}] ${res.statusText}`,
                     );
                 }
-            } else {
-                alert("Nothing to save.");
             }
         },
+        lookup: async (idx) => {
+          const res = await fetch(`/api/tickets/${prefix.prefix}/${currentItems[idx].winning_ticket}`)
+          if (!res.ok) return;
+          const data = await res.json();
+          console.log(JSON.stringify(data))
+          currentItems[idx].first_name = data.first_name || "";
+          currentItems[idx].last_name = data.last_name || "";
+          currentItems[idx].phone_number = data.phone_number || "";
+        }
     };
 
     if (browser) {
@@ -196,18 +203,12 @@
                         bind:value={item.winning_ticket}
                         onchange={async () => {
                           item.changed = true;
-                          const res = await fetch(`/api/tickets/${prefix.prefix}/${item.winning_ticket}`);
-                          if (!res.ok) return
-                          const data = await res.json();
-                          if (data) {
-                            item.first_name = data.first_name || "(blank)";
-                            item.last_name = data.last_name || "(blank)";
-                          }
+                          await functions.lookup(idx);
                         }}
                     /></td
                 >
                 <td class="p-1 border border-gray-700">
-                    {item.last_name || "(blank)"}, {item.first_name || "(blank)"}
+                    {item.last_name || "(blank)"}, {item.first_name || "(blank)"} | {item.phone_number || "(blank)"}
                 </td>
                 <td class="p-1 border border-gray-700"
                     ><button

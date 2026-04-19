@@ -27,3 +27,14 @@ class Winner:
     last_name: str = ""
     phone_number: str = ""
     preference: str = ""
+
+@dataclass
+class WinnerByName:
+    prefix: str = ""
+    last_name: str = ""
+    first_name: str = ""
+    phone_number: str = ""
+    preference: str = ""
+    basket_id: int = 0
+    winning_ticket: int = 0
+    description: str = ""

@@ -1,2 +1,2 @@
 from .system import ApiKey, ApiReq, Prefix
-from .data import Ticket, Basket, Winner
+from .data import Ticket, Basket, Winner, WinnerByName

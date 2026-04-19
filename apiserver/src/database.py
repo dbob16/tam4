@@ -33,6 +33,10 @@ def init_db():
         SELECT b.prefix, b.basket_id, b.description, b.winning_ticket, t.first_name, t.last_name, t.phone_number, t.preference
         FROM baskets b LEFT JOIN tickets t ON b.prefix = t.prefix AND b.winning_ticket = t.ticket_id
         ORDER BY b.prefix, b.basket_id""")
+    cur.execute("""CREATE OR REPLACE VIEW winners_by_name AS
+        SELECT b.prefix, t.last_name, t.first_name, t.phone_number, t.preference, b.basket_id, b.winning_ticket, b.description
+        FROM baskets b LEFT JOIN tickets t on b.prefix = t.prefix AND b.winning_ticket = t.ticket_id
+        ORDER BY b.prefix, t.last_name, t.first_name, t.phone_number, b.basket_id""")
     conn.commit()
     conn.close()
     print("Database initiated successfully.")
